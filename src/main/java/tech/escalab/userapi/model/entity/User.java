@@ -45,8 +45,8 @@ public class User implements Serializable  {
     @Column(nullable = false, unique = true)
     private String password;
 
-    @Column(name = "is_Deleted")
-    private Boolean isDeleted = false;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
     @Column(name = "delete_at")
     private LocalDateTime deletedAt;
@@ -112,11 +112,11 @@ public class User implements Serializable  {
         this.password = password;
     }
 
-    public void setIsDeleted(Boolean is_deleted) {
+    public void setIsDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
 
-    public void setDeletedAt(LocalDateTime deleted_at) {
+    public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
     }
 

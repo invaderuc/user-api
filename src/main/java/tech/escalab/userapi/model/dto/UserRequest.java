@@ -1,7 +1,6 @@
 package tech.escalab.userapi.model.dto;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +9,7 @@ import lombok.Setter;
 import tech.escalab.userapi.model.entity.Phone;
 import tech.escalab.userapi.model.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -30,9 +30,9 @@ public class UserRequest {
     @NotEmpty(message = "El password del usuario es obligatorio")
     private String password;
 
-    private String is_deleted;
+    private Boolean isDeleted;
 
-    private String deleted_at;
+    private LocalDateTime deletedAt;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Phone> phones;
@@ -43,6 +43,8 @@ public class UserRequest {
         dto.setEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
         dto.setPhones(entity.getPhones());
+        dto.setDeletedAt(entity.getDeletedAt());
+        dto.setIsDeleted(entity.getIsDeleted());
 
         return dto;
     }
