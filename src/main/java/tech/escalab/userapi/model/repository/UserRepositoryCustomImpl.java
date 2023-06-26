@@ -24,7 +24,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
 
         Root<User> users = criteriaQuery.from(User.class);
 
-        criteriaQuery.select(users);
+        criteriaQuery.select(users).where(criteriaBuilder.equal(users.get("isDeleted"), false));;
         List<User> result = entityManager.createQuery(criteriaQuery).getResultList();
 
         return result;
@@ -36,6 +36,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         Root<User> users = criteriaQuery.from(User.class);
+
 
         criteriaQuery.select(users).where(criteriaBuilder.equal(users.get("name"), name));
 
@@ -86,11 +87,11 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
             if (user != null && user.getUserId() != null) {
                 return entityManager.merge(user);
             } else {
-                throw new IllegalArgumentException("User or User ID cannot be null");
+                throw new IllegalArgumentException("Usuario no existe");
             }
         } catch (Exception ex) {
             // Handle exceptions, possibly log them and throw a more specific exception.
-            throw new RuntimeException("Error updating user", ex);
+            throw new RuntimeException("Error al actualizar", ex);
         }
     }
 }

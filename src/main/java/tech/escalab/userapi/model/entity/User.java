@@ -36,32 +36,24 @@ public class User implements Serializable  {
     @NotEmpty(message = "El Nombre es Obligatorio")
     @Column(nullable = false, unique = true)
     private String name;
-
     @NotEmpty(message = "El Correo es Obligatorio")
     @Column(nullable = false, unique = true)
     private String email;
-
     @NotEmpty(message = "El Email es Password")
     @Column(nullable = false, unique = true)
     private String password;
-
     @Column(name = "is_deleted")
-    private Boolean isDeleted;
-
-    @Column(name = "delete_at")
+    private Boolean isDeleted = false;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     @OneToMany(fetch= FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private List<Phone> phones;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User that = (User) o;
-        return userId.equals(that.userId);
-    }
 
     @Override
     public int hashCode() {
@@ -91,7 +83,12 @@ public class User implements Serializable  {
     public Boolean getIsDeleted() {
         return isDeleted;
     }
-
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
     public LocalDateTime getDeletedAt() {
         return deletedAt;
     }
@@ -112,16 +109,19 @@ public class User implements Serializable  {
         this.password = password;
     }
 
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
+    public void setIsDeleted(Boolean isDeleted) { this.isDeleted = isDeleted; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt;}
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt;}
+    public void setDeletedAt(LocalDateTime deletedAt) { this.deletedAt = deletedAt;}
 
-    public void setDeletedAt(LocalDateTime deletedAt) {
-        this.deletedAt = deletedAt;
-    }
+    public void setPhones(List<Phone> phones) { this.phones = phones; }
 
-    public void setPhones(List<Phone> phones) {
-        this.phones = phones;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User that = (User) o;
+        return userId.equals(that.userId);
     }
 
     @Override

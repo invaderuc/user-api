@@ -59,11 +59,15 @@ public class UserRequest {
         UUID uuid = UUID.randomUUID();
         userEntity.setUserId(uuid);
 
+        LocalDateTime now = LocalDateTime.now();
+        userEntity.setCreatedAt(now);
+
         List<Phone> phones = dto.getPhones().stream().map(phoneReq -> {
             Phone phone = new Phone();
             phone.setPhoneNumber(phoneReq.getPhoneNumber());
             phone.setCodCity(phoneReq.getCodCity());
             phone.setCodCountry(phoneReq.getCodCountry());
+            phone.setCreatedAt(now);
 
             UUID uuidPhone = UUID.randomUUID();
             phone.setPhoneId(uuidPhone);

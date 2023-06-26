@@ -47,7 +47,6 @@ public class UserServiceImpl implements IPhoneService{
     @Override
     public UserRequest insertUser(UserRequest request) {
         User userEntity = UserRequest.mapToEntity(request);
-        // Call the save method on the userRepository instance
         userRepository.save(userEntity);
         return request;
     }
@@ -58,8 +57,7 @@ public class UserServiceImpl implements IPhoneService{
         User user = userRepository.getUserById(userId);
 
         if(user != null){
-            LocalDateTime currentDateTime = LocalDateTime.now();
-            user.setDeletedAt(currentDateTime);
+            user.setDeletedAt(LocalDateTime.now());
             user.setIsDeleted(true);
             userRepository.save(user);
         }
@@ -68,8 +66,17 @@ public class UserServiceImpl implements IPhoneService{
     @Override
     @Transactional
     public User updateUser(User userRequest) {
-        User user = userRepository.updateUser(userRequest);
-        return user;
+
+        User user = userRepository.getUserByEmail(userRequest.getEmail());
+
+        if(user != null){
+            userRequest.setUpdatedAt(LocalDateTime.now());
+            userRequest.setDeletedAt(user.getDeletedAt());
+            userRequest.setCreatedAt(user.getCreatedAt());
+            User updatedUser = userRepository.updateUser(userRequest);
+            return updatedUser;
+        }
+        return  null;
     }
 
     @Override
