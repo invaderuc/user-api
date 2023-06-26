@@ -36,11 +36,9 @@ A continuación se detalla el paso a paso para un instalación exitosa
    ```
 5. Hacer correr proyecto en nuestro IDE favorito.
 6. Importar User-API.postman_collection.json en nuestro postman para probar nuestros servicios.
-7. Probar servivios
+7. Probar servicios
 8. Swagger disponible en /doc/swagger-ui/index.html solo al estar corriendo el proyecto.
 
 Cualquier duda estaré pendiente del correo.
 
 PD: En caso de tener problemas para visualizar la DB habilitar allowPublicKeyRetrieval 
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
