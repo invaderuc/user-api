@@ -9,7 +9,6 @@ public interface UserRepositoryCustom {
     List<User> getAllUsers();
     User getUserByName(String name);
     User getUserByEmail(String email);
-    User getUserByPhone(Integer phoneNumber);
     User getUserById(UUID userId);
     User updateUser(User user);
 }

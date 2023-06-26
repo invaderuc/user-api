@@ -14,5 +14,4 @@ public interface IPhoneService {
     User updateUser(User user);
     void deleteUser(UUID userId);
     UserRequest getUserByName(String name);
-    UserRequest getUserByPhone(Integer phoneNumber);
 }

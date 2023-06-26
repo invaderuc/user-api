@@ -28,7 +28,7 @@ public class UserController  {
 
     //GET localhost:8080/users/
     @GetMapping("/")
-    @Operation(summary = "Obtiene todos los users")
+    @Operation(summary = "Listar usuarios activos")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(schema = @Schema(implementation = User.class), mediaType = "application/json")
@@ -37,6 +37,9 @@ public class UserController  {
                     @Content(schema = @Schema(implementation = User.class), mediaType = "application/json")
             }),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = {
+                    @Content(schema = @Schema())
+            }),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = {
                     @Content(schema = @Schema())
             }),
             @ApiResponse(responseCode = "409", description = "CONFLICT", content = {
@@ -56,6 +59,7 @@ public class UserController  {
 
     //GET localhost:8080/users/3
     @GetMapping("/{id}")
+    @Operation(summary = "Treae usuario por UUID")
     public ResponseEntity<UserRequest> getUser(@PathVariable("id") UUID userId){
 
         UserRequest user = userService.getUser(userId);
@@ -68,6 +72,7 @@ public class UserController  {
 
     //post localhost:8080/users/
     @PostMapping("/")
+    @Operation(summary = "Guardar usuarios")
     public ResponseEntity<?> insertUser (@Valid @RequestBody UserRequest userRequest){
 
         UserRequest user = userService.insertUser(userRequest);
@@ -76,6 +81,7 @@ public class UserController  {
 
     //PUT localhost:8080/users/
     @PutMapping("/")
+    @Operation(summary = "Actualizar Usuario")
     public ResponseEntity<User> updateUser(@RequestBody User userRequest){
 
         User user = userService.updateUser(userRequest);
@@ -83,7 +89,7 @@ public class UserController  {
 
         return new ResponseEntity<>(userRequest, HttpStatus.ACCEPTED);
     }
-
+    @Operation(summary = "Eliminar con soft Delete")
     @DeleteMapping("/{id}")
     public ResponseEntity<UserRequest> deleteUser(@PathVariable("id") UUID userId){
 
@@ -97,22 +103,12 @@ public class UserController  {
     }
 
     //localhost:8080/users/?name=Docker
-    @GetMapping(path = "/", params = {"name"})
+    @Operation(summary = "Traer usuario por nombre")
+    @GetMapping(path = "/?name={name}", params = {"name"})
     public ResponseEntity<UserRequest> getUserByName(@RequestParam String name){
         UserRequest user = userService.getUserByName(name);
 
         if(user == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
-
-    //localhost:8080/users/phone/?phoneNumber=Docker
-    @GetMapping(path = "/phone", params = {"phoneNumber"})
-    public ResponseEntity<UserRequest> getUserByPhone(@RequestParam Integer phoneNumber){
-        UserRequest user = userService.getUserByPhone(phoneNumber);
-
-        if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);

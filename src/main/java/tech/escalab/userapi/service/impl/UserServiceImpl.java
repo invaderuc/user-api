@@ -99,9 +99,4 @@ public class UserServiceImpl implements IPhoneService{
         }
         return null;
     }
-
-    @Override
-    public UserRequest getUserByPhone(Integer phoneNumber) {
-        return null;
-    }
 }

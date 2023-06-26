@@ -1,6 +1,7 @@
 package tech.escalab.userapi.model.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -23,11 +24,13 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
 
         Root<User> users = criteriaQuery.from(User.class);
-
         criteriaQuery.select(users).where(criteriaBuilder.equal(users.get("isDeleted"), false));;
-        List<User> result = entityManager.createQuery(criteriaQuery).getResultList();
 
-        return result;
+        try {
+            return entityManager.createQuery(criteriaQuery).getResultList();
+        } catch (NoResultException e) {
+            return null; // Handle no result found case
+        }
     }
 
     @Override
@@ -36,11 +39,19 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         Root<User> users = criteriaQuery.from(User.class);
+        // Conditions
+        criteriaQuery.where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(users.get("isDeleted"), false),
+                        criteriaBuilder.equal(users.get("name"), name)
+                )
+        );
 
-
-        criteriaQuery.select(users).where(criteriaBuilder.equal(users.get("name"), name));
-
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
+        try {
+            return entityManager.createQuery(criteriaQuery).getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Handle no result found case
+        }
     }
 
     @Override
@@ -49,23 +60,19 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         Root<User> users = criteriaQuery.from(User.class);
 
-        criteriaQuery.select(users).where(criteriaBuilder.equal(users.get("email"), email));
+        // Conditions
+        criteriaQuery.where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(users.get("isDeleted"), false),
+                        criteriaBuilder.equal(users.get("email"), email)
+                )
+        );
 
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
-    }
-
-    @Override
-    public User getUserByPhone(Integer phoneNumber) {
-
-        System.out.println("PhoneNumber: " + phoneNumber);
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-        Root<User> users = criteriaQuery.from(User.class);
-
-        Join<User, Phone> relPhone = users.join("phone");
-        criteriaQuery.select(users).where(criteriaBuilder.equal(relPhone.get("name"), phoneNumber));
-
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
+        try {
+            return entityManager.createQuery(criteriaQuery).getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Handle no result found case
+        }
     }
 
     @Override
@@ -75,9 +82,19 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         Root<User> users = criteriaQuery.from(User.class);
 
-        criteriaQuery.select(users).where(criteriaBuilder.equal(users.get("userId"), userId));
+        // Conditions
+        criteriaQuery.where(
+                criteriaBuilder.and(
+                        criteriaBuilder.equal(users.get("isDeleted"), false),
+                        criteriaBuilder.equal(users.get("userId"), userId)
+                )
+        );
 
-        return entityManager.createQuery(criteriaQuery).getSingleResult();
+        try {
+            return entityManager.createQuery(criteriaQuery).getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Handle no result found case
+        }
     }
 
     @Override

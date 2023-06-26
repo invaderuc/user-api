@@ -99,6 +99,17 @@ public class DetailError {
         return detailsErrores;
     }
 
+    public static List<DetailError> mapFoundError(){
+
+        List<DetailError> detailsErrores = new ArrayList<>();
+        DetailError detail = new DetailError();
+        detail.setMensaje("No encontrador");
+
+        detailsErrores.add(detail);
+
+        return detailsErrores;
+    }
+
     private static String extractValueMessage(String input) {
         if (input == null) {
             return null;
